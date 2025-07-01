@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Siva Suriya | Portfolio</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <style>
     * {
       margin: 0;
@@ -19,6 +20,13 @@
       color: #fff;
       line-height: 1.6;
       overflow-x: hidden;
+    }
+
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
     }
 
     header {
@@ -64,11 +72,37 @@
       text-shadow: 0 0 10px #00f0ff;
     }
 
+    .nav-dots {
+      position: fixed;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 999;
+    }
+
+    .nav-dots span {
+      width: 12px;
+      height: 12px;
+      background: #ccc;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .nav-dots span:hover {
+      background: #00f0ff;
+      box-shadow: 0 0 8px #00f0ff;
+    }
+
     .container {
       display: flex;
       flex-wrap: nowrap;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
     }
 
     section {
@@ -76,7 +110,14 @@
       height: 100vh;
       padding: 3rem 2rem;
       scroll-snap-align: start;
-      box-sizing: border-box;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     h3 {
@@ -124,9 +165,47 @@
       color: #aaa;
       border-top: 1px solid #444;
     }
+
+    .social-bar {
+      position: fixed;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      z-index: 1000;
+    }
+
+    .social-bar a {
+      color: #00f0ff;
+      font-size: 1.5rem;
+      transition: 0.3s;
+    }
+
+    .social-bar a:hover {
+      color: white;
+      transform: scale(1.2);
+    }
   </style>
 </head>
 <body>
+  <div id="particles-js"></div>
+
+  <div class="social-bar">
+    <a href="https://www.linkedin.com/in/siva-suriya" target="_blank"><i class="fab fa-linkedin"></i></a>
+    <a href="https://mail.google.com/mail/?view=cm&to=suriyasethu143@gmail.com&body=Hello%0AI%20saw%20your%20portfolio." target="_blank">
+  <i class="fa fa-envelope"></i>
+</a>
+  </div>
+
+  <div class="nav-dots">
+    <span data-target="#about"></span>
+    <span data-target="#skills"></span>
+    <span data-target="#experience"></span>
+    <span data-target="#projects"></span>
+    <span data-target="#contact"></span>
+  </div>
 
   <header>
     <h1>Siva Suriya</h1>
@@ -135,8 +214,8 @@
 
   <nav>
     <a href="#about">About</a>
-    <a href="#experience">Experience</a>
     <a href="#skills">Skills</a>
+    <a href="#experience">Experience</a>
     <a href="#projects">Projects</a>
     <a href="#contact">Contact</a>
   </nav>
@@ -191,6 +270,7 @@
         <h3>💼 Experience</h3>
         <p><strong>Process Associate – ENoah iSolution</strong> (Nov 2024 – Present)</p>
         <ul>
+          <br>
           <li>Managed end-to-end medical records retrieval for insurance underwriting</li>
           <li>Ensured HIPAA compliance and secure handling of sensitive health data</li>
           <li>Coordinated with hospitals to expedite documentation</li>
@@ -205,6 +285,7 @@
         <h3>📁 Projects</h3>
         <p><strong>IoT-Based Waste Detection System</strong></p>
         <ul>
+          <br>
           <li>Designed an IoT-powered system to monitor bin fill levels and alert authorities in real-time, promoting a cleaner city and smart waste handling.</li>
           <li>Used sensors and live data transmission for smart urban planning.</li>
         </ul>
@@ -228,5 +309,21 @@
     &copy; 2025 Siva Suriya | All Rights Reserved
   </footer>
 
+  <script>
+    particlesJS.load('particles-js', 'https://cdn.jsdelivr.net/gh/VincentGarreau/particles.js/particles.json');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    });
+    document.querySelectorAll('section').forEach(sec => observer.observe(sec));
+
+    document.querySelectorAll('.nav-dots span').forEach(dot => {
+      dot.onclick = () => {
+        document.querySelector(dot.dataset.target).scrollIntoView({ behavior: 'smooth' });
+      };
+    });
+  </script>
 </body>
 </html>
